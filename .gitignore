@@ -1,0 +1,20 @@
+# Ukryte pliki Visual Studio (te, które psuły widok)
+.vs/
+
+# Foldery budowania CMake (tutaj są ciężkie pliki .exe i .obj)
+out/
+build/
+bin/
+
+# Cache i pliki konfiguracyjne CMake
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+*.cmake
+Makefile
+
+# Skompilowane pliki binarne
+*.exe
+*.obj
+*.pdb
+*.ilk
