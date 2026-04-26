@@ -13,4 +13,4 @@ endif()
 
 include_directories("Projekt_1/include")
 
-add_executable(Projekt_1 "Projekt_1/src/main.cpp" "Projekt_1/include/List.h" "Projekt_1/include/Reader.h")
+add_executable(Projekt_1 "Projekt_1/src/main.cpp" "Projekt_1/include/List.h" "Projekt_1/include/Reader.h" "Projekt_1/include/Weryfikator.h")

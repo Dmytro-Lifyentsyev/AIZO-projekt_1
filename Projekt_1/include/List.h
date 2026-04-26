@@ -1,6 +1,5 @@
-#ifdef WIN32
+#pragma once
 #include <cstddef>
-#endif
 
 template <typename T>
 class List {
