@@ -1,5 +1,4 @@
 ﻿cmake_minimum_required (VERSION 3.10)
-
 project ("Projekt_1")
 
 set(CMAKE_CXX_STANDARD 17)
@@ -13,4 +12,10 @@ endif()
 
 include_directories("Projekt_1/include")
 
-add_executable(Projekt_1 "Projekt_1/src/main.cpp" "Projekt_1/include/List.h" "Projekt_1/include/Reader.h" "Projekt_1/include/Weryfikator.h")
+add_executable(Projekt_1 
+    "Projekt_1/src/main.cpp" 
+    "Projekt_1/src/Parameters.cpp" 
+    "Projekt_1/include/List.hpp" 
+    "Projekt_1/include/Reader.hpp" 
+    "Projekt_1/include/Weryfikator.hpp"
+)

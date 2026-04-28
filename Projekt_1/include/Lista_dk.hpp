@@ -1,5 +1,4 @@
 #pragma once
-#include <cstddef>
 
 template <typename T>
 class List_dk {
@@ -52,5 +51,24 @@ public:
 
 	size_t getSize() const {
 		return size;
+	}
+	// Operator [] dla Listy Dwukierunkowej - optymalizacja poprzez wybór kierunku przeszukiwania
+	T& operator[](size_t index) {
+		// Sprawdzamy, czy szybciej będzie iść od początku, czy od końca
+		if (index < size / 2) {
+			auto* current = head; // zaczynamy od początku
+			for (size_t i = 0; i < index; ++i) {
+				current = current->next; //przechodzi do nastepnego wezla
+			}
+			return current->data; //zwraca dane z aktualnego wezla
+
+		}
+		else {
+			auto* current = tail; //	zaczynamy od końca
+			for (size_t i = size - 1; i > index; --i) {
+				current = current->prev; //przechodzi do poprzedniego wezla
+			}
+			return current->data;
+		}
 	}
 };

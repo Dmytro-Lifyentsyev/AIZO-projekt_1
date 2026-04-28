@@ -1,5 +1,4 @@
 #pragma once
-#include <cstddef>
 
 template <typename T>
 class List {
@@ -49,5 +48,14 @@ public:
 
 	size_t getSize() const {
 		return size;
+	}
+
+	// Operator [] dla Listy Jednokierunkowej 
+	T& operator[](size_t index) {
+		auto* current = head; // zaczynamy od początku
+		for (size_t i = 0; i < index; ++i) {
+			current = current->next; // przechodzi do nastepnego wezla
+		}
+		return current->data; // zwraca dane z aktualnego wezla
 	}
 };
