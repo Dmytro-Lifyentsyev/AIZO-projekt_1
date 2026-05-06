@@ -14,7 +14,7 @@ int main(int argc, char** argv) {
     if (Parameters::runMode == Parameters::RunModes::help) {
         Parameters::help();
     }
-    else if (Parameters::runMode == Parameters::RunModes::singleFile) {
+    else if (Parameters::runMode == Parameters::RunModes::singleFile || Parameters::runMode == Parameters::RunModes::benchmark) {
 
         switch (Parameters::structure) {
         case Parameters::Structures::array:
