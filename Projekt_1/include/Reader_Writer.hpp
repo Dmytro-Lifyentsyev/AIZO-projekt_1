@@ -6,6 +6,20 @@
 
 using namespace std;
 
+// Szablon funkcji do wczytywania wartości z pliku, domyslnie dla typów, które obsługują operator >>
+template <typename T>
+inline bool wczytajWartosc(ifstream& plik, T& wartosc) {
+    if (plik >> wartosc) return true;
+    return false;
+}
+
+// Specjalizacja szablonu dla typu string, ponieważ operator >> nie działa poprawnie z ciągami zawierającymi spacje
+template <>
+inline bool wczytajWartosc<string>(ifstream& plik, string& wartosc) {
+    if (getline(plik, wartosc)) return true;
+    return false;
+}
+
 template <typename T, typename Structure> // szablon funkcji do odczytu danych z pliku
 
 bool read(const string& nazwaPliku, Structure& Struktura) { 
@@ -22,9 +36,13 @@ bool read(const string& nazwaPliku, Structure& Struktura) {
         return false;
     }
 
+	string pustaLinia; // zmienna do przechowywania pustej linii po odczytaniu liczby elementów
+	getline(plik, pustaLinia); // odczytujemy pustą linię, aby przygotować się do odczytu danych
+	Struktura.reserve(iloscDanych);
+
     for (size_t i = 0; i < iloscDanych; ++i) {
 		T wartosc; // zmienna do przechowywania odczytanej wartości
-		if (plik >> wartosc) { // próba odczytania wartości z pliku
+		if (wczytajWartosc(plik, wartosc)) { // próba odczytania wartości z pliku
             Struktura.push_back(wartosc);
         }
         else {

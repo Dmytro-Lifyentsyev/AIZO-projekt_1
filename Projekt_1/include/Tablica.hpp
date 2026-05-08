@@ -18,7 +18,7 @@ private:
     }
 
 public:
-	Tablica(size_t initialCapacity = 2) { //konstruktor z domyślną pojemnością
+	Tablica(size_t initialCapacity = 1) { //konstruktor z domyślną pojemnością
 		size = 0; 
 		capacity = initialCapacity; 
 		data = new T[capacity];
@@ -26,6 +26,18 @@ public:
 
     ~Tablica() {
 		delete[] data;
+    }
+
+    void reserve(size_t newCapacity) {
+        if (newCapacity > capacity) {
+            T* newData = new T[newCapacity];
+            for (size_t i = 0; i < size; i++) {
+                newData[i] = data[i];
+            }
+            delete[] data;
+            data = newData;
+            capacity = newCapacity;
+        }
     }
 
     void push_back(const T& value) {

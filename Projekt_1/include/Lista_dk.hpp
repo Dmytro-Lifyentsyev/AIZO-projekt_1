@@ -33,6 +33,10 @@ public:
 		}
 	}
 
+	void reserve(size_t) {
+		// Lista dwukierunkowa nie potrzebuje rezerwacji pamięci, więc ta funkcja jest pusta
+	}
+
 	void push_back(const T& value) {
 		Node* newNode = new Node(value);
 		if (head == nullptr)

@@ -4,10 +4,12 @@
 #include "List.hpp"
 #include "Lista_dk.hpp"
 #include "Eksperyment.hpp" 
+#include <ctime>
 
 using namespace std;
 
 int main(int argc, char** argv) {
+    srand(static_cast<unsigned int>(time(NULL)));
 
     Parameters::readParameters(argc - 1, argv + 1);
 

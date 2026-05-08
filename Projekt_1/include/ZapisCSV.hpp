@@ -10,12 +10,13 @@
 using namespace std;
 
 // Funkcja zapisująca wyniki do pliku CSV
-inline void zapiszWynikDoCSV(const string& nazwaPliku, size_t rozmiar, const string& struktura, const string& typ, 
-    const string& algorytm, const string& pivot, double czasMs, const string& czasStart, const string& czasKoniec, const string& weryfikacja) {
+inline void zapiszWynikDoCSV(const string& nazwaPliku, size_t rozmiar, const string& struktura, const string& typ, const string& algorytm, 
+    const string& pivot, const string& odstep,double czasus, double czasms, double czass, const string& czasStart, const string& czasKoniec,
+    const string& weryfikacja) {
 
 	ifstream plikTest(nazwaPliku); // Sprawdzamy, czy plik już istnieje
-	bool plikIstnieje = plikTest.good(); 
-	plikTest.close(); 
+	bool plikIstnieje = plikTest.good(); // Jeśli plik istnieje, nie zapisujemy nagłówków kolumn
+	plikTest.close(); // Zamykamy plik testowy
 
     ofstream plik(nazwaPliku, ios::app); // Otwieramy plik w trybie dopisywania (append)
 
@@ -27,7 +28,7 @@ inline void zapiszWynikDoCSV(const string& nazwaPliku, size_t rozmiar, const str
 
 	// Jeśli plik nie istnieje, zapisuje nagłówki kolumn
     if (!plikIstnieje) {
-        plik << "Rozmiar Danych;Struktura;Typ Danych;Algorytm;Pivot;Czas us;Start Sortowania;Koniec Sortowania;Weryfikacja\n";
+        plik << "Rozmiar Danych;Struktura;Typ Danych;Algorytm;Pivot;Odstep;Czas us;Czas ms;Czas s;Start Sortowania;Koniec Sortowania;Weryfikacja\n";
     }
 
 	// Zapisujemy dane do pliku
@@ -36,7 +37,10 @@ inline void zapiszWynikDoCSV(const string& nazwaPliku, size_t rozmiar, const str
         << typ << ";"
         << algorytm << ";"
         << pivot << ";"
-        << czasMs << ";"
+        << odstep << ";"
+        << czasus << ";"
+        << czasms << ";"
+        << czass << ";"
         << czasStart << ";"
         << czasKoniec << ";"
 		<< weryfikacja << "\n";
@@ -61,6 +65,7 @@ inline string pobierzAktualnyCzas() {
     return ss.str();
 }
 
+// Tłumaczenia dla czytelności wyników
 inline string tlumaczAlgorytm() {
     switch (Parameters::algorithm) {
     case Parameters::Algorithms::quick:  return "Quick_Sort";
@@ -72,7 +77,6 @@ inline string tlumaczAlgorytm() {
 
 inline string tlumaczPivot() {
     if (Parameters::algorithm != Parameters::Algorithms::quick) return "Brak";
-
     switch (Parameters::pivot) {
     case Parameters::Pivots::left:   return "Lewy";
     case Parameters::Pivots::middle: return "Srodkowy";
@@ -82,9 +86,19 @@ inline string tlumaczPivot() {
     }
 }
 
+inline string tlumaczOdstep() {
+    if (Parameters::algorithm != Parameters::Algorithms::shell) return "Brak";
+    switch (Parameters::shellParameter) {
+    case Parameters::ShellParameters::option1: return "Ciag Shella";
+    case Parameters::ShellParameters::option2: return "Ciag Knutha";
+    default: return "Nieznany";
+    }
+}
+
 inline string tlumaczTyp() {
     switch (Parameters::dataType) {
     case Parameters::DataTypes::typeInt:   return "INT";
+    case Parameters::DataTypes::tyleUnsignedInt:   return "UNSIGNED INT";
     case Parameters::DataTypes::typeFloat: return "FLOAT";
     case Parameters::DataTypes::typeString:return "STRING";
     default: return "INNY_TYP";

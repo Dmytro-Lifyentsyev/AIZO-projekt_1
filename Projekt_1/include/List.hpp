@@ -31,6 +31,10 @@ public:
 		}
 	}
 
+	void reserve(size_t) {
+		// Lista jednokierunkowa nie potrzebuje rezerwacji pamięci, więc ta funkcja jest pusta
+	}
+
 	void push_back(const T& value) {
 		Node* newNode = new Node(value); //tworzy nowy wezel z podana wartoscia
 		if (head == nullptr)

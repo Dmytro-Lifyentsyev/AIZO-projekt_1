@@ -29,4 +29,10 @@ public:
         std::chrono::duration<double, std::milli> czas_trwania = punkt_konca - punkt_startu;
         return czas_trwania.count();
     }
+
+    // Zwraca czas w sekundach
+    double getCzasSekundy() {
+        std::chrono::duration<double> czas_trwania = punkt_konca - punkt_startu;
+        return czas_trwania.count();
+    }
 };
