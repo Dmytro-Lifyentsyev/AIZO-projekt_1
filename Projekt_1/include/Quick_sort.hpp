@@ -42,8 +42,8 @@ template <typename Structure>
 void quickSort(Structure& struktura, int low, int high, Parameters::Pivots rodzajPivota) { 
     if (low < high) {   
         int pi = partition(struktura, low, high, rodzajPivota); 
-		quickSort(struktura, low, pi - 1, rodzajPivota); // Rekurencyjne sortowanie elementów przed i po podziale
-        quickSort(struktura, pi + 1, high, rodzajPivota); // Rekurencyjne sortowanie elementów przed i po podziale
+		quickSort(struktura, low, pi - 1, rodzajPivota); // Rekurencyjne sortowanie elementów przed pivotem po podziale
+        quickSort(struktura, pi + 1, high, rodzajPivota); // Rekurencyjne sortowanie elementów za pivotem po podziale
     }
 }
 

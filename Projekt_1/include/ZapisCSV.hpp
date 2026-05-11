@@ -11,7 +11,7 @@ using namespace std;
 
 // Funkcja zapisująca wyniki do pliku CSV
 inline void zapiszWynikDoCSV(const string& nazwaPliku, size_t rozmiar, const string& struktura, const string& typ, const string& algorytm, 
-    const string& pivot, const string& odstep,double czasus, double czasms, double czass, const string& czasStart, const string& czasKoniec,
+    const string& pivot, const string& odstep, const string& ulozenie, double czasus, double czasms, double czass, const string& czasStart, const string& czasKoniec,
     const string& weryfikacja) {
 
 	ifstream plikTest(nazwaPliku); // Sprawdzamy, czy plik już istnieje
@@ -28,7 +28,7 @@ inline void zapiszWynikDoCSV(const string& nazwaPliku, size_t rozmiar, const str
 
 	// Jeśli plik nie istnieje, zapisuje nagłówki kolumn
     if (!plikIstnieje) {
-        plik << "Rozmiar Danych;Struktura;Typ Danych;Algorytm;Pivot;Odstep;Czas us;Czas ms;Czas s;Start Sortowania;Koniec Sortowania;Weryfikacja\n";
+        plik << "Rozmiar Danych;Struktura;Typ Danych;Algorytm;Pivot;Odstep;Ułożenie elementów;Czas us;Czas ms;Czas s;Start Sortowania;Koniec Sortowania;Weryfikacja\n";
     }
 
 	// Zapisujemy dane do pliku
@@ -38,6 +38,7 @@ inline void zapiszWynikDoCSV(const string& nazwaPliku, size_t rozmiar, const str
         << algorytm << ";"
         << pivot << ";"
         << odstep << ";"
+		<< ulozenie << ";"
         << czasus << ";"
         << czasms << ";"
         << czass << ";"
@@ -95,6 +96,16 @@ inline string tlumaczOdstep() {
     }
 }
 
+inline string tlumaczUlozenie() {
+    switch (Parameters::distribution) {
+    case Parameters::Distribution::random: return "Losowe";
+    case Parameters::Distribution::ascending: return "Posortowane rosnąco";
+	case Parameters::Distribution::ascending50Per: return "50% Posortowane rosnąco";
+    case Parameters::Distribution::descending: return "Posortowane malejąco";
+    default: return "Nieznane";
+    }
+}
+
 inline string tlumaczTyp() {
     switch (Parameters::dataType) {
     case Parameters::DataTypes::typeInt:   return "INT";
@@ -110,6 +121,8 @@ inline string tlumaczStrukture() {
     case Parameters::Structures::array:      return "Tablica";
     case Parameters::Structures::singleList: return "Lista_Jednokierunkowa";
     case Parameters::Structures::doubleList: return "Lista_Dwukierunkowa";
+	case Parameters::Structures::stack:       return "Stos";
+	case Parameters::Structures::binaryTree:  return "BST";
     default: return "Inna_Struktura";
     }
 }

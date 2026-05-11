@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <string>
 #include <algorithm> 
+#include <functional>
 #include "Parameters.h"
 
 using namespace std;
@@ -40,24 +41,25 @@ void wypelnijDaneTestowe(Structure& struktura) {
     int rozklad = static_cast<int>(Parameters::distribution);
 	struktura.reserve(rozmiar);
 
-    DataType* bufor = new DataType[rozmiar];
+	DataType* bufor = new DataType[rozmiar];// Tymczasowy bufor do przechowywania wygenerowanych wartości
 
+	// Generowanie wartości testowych i wypełnianie bufora
     for (size_t i = 0; i < rozmiar; ++i) {
         bufor[i] = wygenerujWartosc<DataType>();
     }
 
-    if (rozklad == 1) {
+	if (rozklad == 1) { // Rozkład rosnący
         sort(bufor, bufor + rozmiar);
     }
-    else if (rozklad == 2) {
+	else if (rozklad == 2) { // Rozkład rosnący w 50% 
         sort(bufor, bufor + (rozmiar / 2));
     }
-    else if (rozklad == 3) {
+	else if (rozklad == 3) { // Rozkład malejący
         sort(bufor, bufor + rozmiar, greater<DataType>());
     }
-
+	// Wypełnianie struktury danymi z bufora
     for (size_t i = 0; i < rozmiar; ++i) {
         struktura.push_back(bufor[i]);
     }
-    delete[] bufor;
+	delete[] bufor; // Zwolnienie pamięci bufora
 }

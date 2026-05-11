@@ -1,13 +1,13 @@
 #pragma once
 #include "Parameters.h"
 
-// Funkcja sortująca Shella z różnymi odstepami
+// Algorytm Shell sort z 2 wersjami odstepamu: ciag Shella i ciag Knutha
 template <typename Structure>
 void shellSort(Structure& struktura, Parameters::ShellParameters rodzajOstepu) {
     int n = (int)struktura.getSize();
     if (n <= 1) return;
 
-	// Odstepy dla opcji 1: n/2, n/4, n/8, ...
+	// Odstepy dla opcji 1: ciag Shella
     if (rodzajOstepu == Parameters::ShellParameters::option1) {
         for (int odstep = n / 2; odstep > 0; odstep /= 2) {
             // Standardowe sortowanie przez wstawianie dla danego odstepu
@@ -21,7 +21,7 @@ void shellSort(Structure& struktura, Parameters::ShellParameters rodzajOstepu) {
             }
         }
     }
-	// Odstepy dla opcji 2: 1, 4, 13, 40, 121, ...
+	// Odstepy dla opcji 2: ciag Knutha
     else if (rodzajOstepu == Parameters::ShellParameters::option2) {
 		int odstep = 1; // Inicjalizacja odstepu zgodnie z ciągiem Knutha 
 

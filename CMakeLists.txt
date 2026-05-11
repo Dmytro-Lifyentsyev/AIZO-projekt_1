@@ -25,6 +25,9 @@ add_executable(Projekt_1
     "Projekt_1/include/ZapisCSV.hpp"
     "Projekt_1/include/Eksperyment.hpp"
     "Projekt_1/include/Generator.hpp"
+    "Projekt_1/include/Stos.hpp"
+    "Projekt_1/include/BST.hpp"
+    "Projekt_1/include/Quick_sort_stos.hpp"
 )
 
 if(UNIX)

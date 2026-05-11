@@ -1,5 +1,6 @@
 #pragma once
 
+// implementacja struktury - Lista jednokierunkowa
 template <typename T>
 class List {
 private:
@@ -56,7 +57,7 @@ public:
 
 	// Operator [] dla Listy Jednokierunkowej 
 	T& operator[](size_t index) {
-		auto* current = head; // zaczynamy od początku
+		Node* current = head; // zaczynamy od początku
 		for (size_t i = 0; i < index; ++i) {
 			current = current->next; // przechodzi do nastepnego wezla
 		}

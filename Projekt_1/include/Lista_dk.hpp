@@ -1,29 +1,31 @@
 #pragma once
 
+// implementacja struktury - Lista dwukierunkowa
 template <typename T>
 class List_dk {
 private:
 	struct Node {
 		T data;
-		Node* next;
+		Node* next;	// wskaźnik na następny i poprzedni węzeł
 		Node* prev;
 
 		Node(const T& value) {
-			data = value;
-			next = nullptr;
-			prev = nullptr;
+			data = value;	// inicjalizacja danych węzła
+			next = nullptr; //inicjalizacja wskaźników next i prev na nullptr
+			prev = nullptr; 
 		}
 	};
-	Node* head;
-	Node* tail;
-	size_t size;
+	Node* head; //wskaznik na pierwszy wezel listy
+	Node* tail; //wskaznik na ostatni wezel listy
+	size_t size; //aktualna liczba elementów w liście
 
 public:
-	List_dk() {
+	List_dk() { // konstruktor
 		head = nullptr;
 		tail = nullptr;
 		size = 0;
 	}
+	// Destruktor do zwalniania pamięci
 	~List_dk() {
 		Node* current = head;
 		while (current != nullptr) {
@@ -36,7 +38,7 @@ public:
 	void reserve(size_t) {
 		// Lista dwukierunkowa nie potrzebuje rezerwacji pamięci, więc ta funkcja jest pusta
 	}
-
+	// Funkcja do dodawania elementów na koniec listy
 	void push_back(const T& value) {
 		Node* newNode = new Node(value);
 		if (head == nullptr)
@@ -60,7 +62,7 @@ public:
 	T& operator[](size_t index) {
 		// Sprawdzamy, czy szybciej będzie iść od początku, czy od końca
 		if (index < size / 2) {
-			auto* current = head; // zaczynamy od początku
+			Node* current = head; // zaczynamy od początku
 			for (size_t i = 0; i < index; ++i) {
 				current = current->next; //przechodzi do nastepnego wezla
 			}
@@ -68,7 +70,7 @@ public:
 
 		}
 		else {
-			auto* current = tail; //	zaczynamy od końca
+			Node* current = tail; //	zaczynamy od końca
 			for (size_t i = size - 1; i > index; --i) {
 				current = current->prev; //przechodzi do poprzedniego wezla
 			}

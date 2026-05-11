@@ -13,12 +13,14 @@ int main(int argc, char** argv) {
 
     Parameters::readParameters(argc - 1, argv + 1);
 
+	// Sprawdzanie trybu działania programu
     if (Parameters::runMode == Parameters::RunModes::help) {
-        Parameters::help();
+        Parameters::help(); // tryb pomocy
     }
     else if (Parameters::runMode == Parameters::RunModes::singleFile || Parameters::runMode == Parameters::RunModes::benchmark) {
 
-        switch (Parameters::structure) {
+        // Switch zarządzający strukturami danych
+		switch (Parameters::structure) {
         case Parameters::Structures::array:
             cout << "\nWybrana struktura: Tablica\n";
             uruchomDlaWybranejStruktury<Tablica>();
@@ -32,6 +34,14 @@ int main(int argc, char** argv) {
         case Parameters::Structures::doubleList:
             cout << "\nWybrana struktura: Lista Dwukierunkowa\n";
             uruchomDlaWybranejStruktury<List_dk>();
+            break;
+        case Parameters::Structures::stack:
+            cout << "\nWybrana struktura: Stos\n";
+            uruchomDlaWybranejStruktury<Stos>();
+            break;
+        case Parameters::Structures::binaryTree:
+            cout << "\nWybrana struktura: BST\n";
+            uruchomDlaWybranejStruktury<BST>();
             break;
         default:
             cout << "Nieznana struktura\n";

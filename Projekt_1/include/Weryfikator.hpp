@@ -1,5 +1,5 @@
 #pragma once
-
+// Funkcja do sprawdzanie czy dane zostaly posortowane niemalejaco
 template <typename Structure>
 bool sprawdzCzyPosortowane(Structure& struktura) {
     if (struktura.getSize() <= 1) return true;

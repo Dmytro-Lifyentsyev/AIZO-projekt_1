@@ -1,10 +1,11 @@
 #pragma once
-
 #include <string>
 #include <fstream>
 #include <iostream>
 
 using namespace std;
+
+ // Klasa Reader_Writer do obsługi wczytywania i zapisywania danych z/do plików
 
 // Szablon funkcji do wczytywania wartości z pliku, domyslnie dla typów, które obsługują operator >>
 template <typename T>

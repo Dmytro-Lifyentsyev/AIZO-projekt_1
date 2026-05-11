@@ -1,6 +1,7 @@
 #pragma once
 #include <chrono>
 
+// Klasa Stoper do pomiaru czasu
 class Stoper {
 private:
     // Zmienne przechowujące moment startu i końca

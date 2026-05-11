@@ -31,8 +31,7 @@ void bucketSort(Structure& struktura) {
 	// sprawdzamy czy typ danych to string, jesli tak to sortujemy na podstawie pierwszego znaku, jesli nie to sortujemy numerycznie
     if constexpr (is_same_v<DataType, string>) {
 
-		// Tworzymy dynamiczną tablice 256 kubelkow - kazdy kubelek to struktura
-        Structure* buckets = new Structure[256];
+        Structure* buckets = new Structure[256]; // Tworzymy dynamiczną tablice 256 kubelkow - kazdy kubelek to struktura
 
 		// Rozdzielamy elementy do kubelków na podstawie pierwszego znaku
         for (size_t i = 0; i < n; ++i) {
@@ -52,8 +51,7 @@ void bucketSort(Structure& struktura) {
 
 		delete[] buckets; // Usunięcie kubelków z pamięci
     }
-	// Dla typów numerycznych
-    else {
+    else { // Dla typów numerycznych
 		DataType min_val = struktura[0];
         DataType max_val = struktura[0];
 
@@ -66,8 +64,7 @@ void bucketSort(Structure& struktura) {
 
 		size_t bucketCount = n; // Ustawiamy liczbę kubelkow rowną liczbie elementow
 
-		// Tworzymy dynamiczną tablice kubelkow - kazdy kubelek to struktura 
-        Structure* buckets = new Structure[bucketCount];
+        Structure* buckets = new Structure[bucketCount]; // Tworzymy dynamiczną tablice kubelkow - kazdy kubelek to struktura 
 
         for (size_t i = 0; i < n; ++i) {
 			DataType val = struktura[i]; // Pobieramy wartość elementu

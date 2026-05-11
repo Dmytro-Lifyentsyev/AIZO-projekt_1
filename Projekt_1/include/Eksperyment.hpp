@@ -6,9 +6,11 @@
 #include "Quick_sort.hpp"
 #include "Shell_sort.hpp"
 #include "Bucket_sort.hpp"
+#include "Quick_sort_stos.hpp"
 #include "Stoper.hpp"
 #include "ZapisCSV.hpp"
 #include "Generator.hpp"
+#include "BST.hpp"
 
 using namespace std;
 
@@ -22,11 +24,20 @@ void przeprowadzenieBadania() {
     string nazwaStruktury = tlumaczStrukture();
     string nazwaPivota = tlumaczPivot();
     string nazwaOdstepu = tlumaczOdstep();
+	string nazwaUlozenia = tlumaczUlozenie();
 
 	// Sprawdzanie trybu działania programu czy to pojedynczy plik
     if (Parameters::runMode == Parameters::RunModes::singleFile) {
         Structure struktura;
-        if (!read<DataType>(Parameters::inputFile, struktura)) return;
+
+        Tablica<DataType> bufor;
+        if constexpr (is_same_v<Structure, BST<DataType>>) {
+            if (!read<DataType>(Parameters::inputFile, bufor)) return;
+        }
+        else {
+            // Normalne wczytywanie
+            if (!read<DataType>(Parameters::inputFile, struktura)) return;
+        }
 
         string plikWynikowy = Parameters::outputFile;
         if (plikWynikowy.empty()) {
@@ -41,11 +52,20 @@ void przeprowadzenieBadania() {
         Stoper stoper;
 		stoper.start(); // Uruchamiamy stoper
 
-        // Switch zarządzający algorytmami
-        switch (Parameters::algorithm) {
+        switch (Parameters::algorithm) {  // Switch zarzadzajacy algorytmami
         case Parameters::Algorithms::quick:
             cout << "Algorytm: Quick Sort\n";
-            uruchomQuickSort(struktura, Parameters::pivot);
+            if constexpr (is_same_v<Structure, Stos<DataType>>) {
+                uruchomQuickSortStos(struktura, Parameters::pivot);
+            }
+            else if constexpr (is_same_v<Structure, BST<DataType>>) {
+                for (size_t i = 0; i < bufor.getSize(); ++i) {
+                    struktura.push_back(bufor[i]);
+                }
+            }
+            else {
+                uruchomQuickSort(struktura, Parameters::pivot);
+            }
             break;
         case Parameters::Algorithms::shell:
             cout << "Algorytm: Shell Sort\n";
@@ -63,8 +83,10 @@ void przeprowadzenieBadania() {
 		stoper.stop(); // Zatrzymujemy stoper po zakończeniu sortowania
 		string czasKoniec = pobierzAktualnyCzas(); // Pobieramy aktualny czas po zakończeniu sortowania
 
-		string weryfikacja = sprawdzCzyPosortowane(struktura) ? "OK" : "BLAD"; // Sprawdzamy, czy dane są posortowane i zapisujemy wynik weryfikacji
-		
+        // weryfikacja sortowania
+		if (sprawdzCzyPosortowane(struktura)) cout << "Weryfikacja: struktura jest posortowana.\n";
+        else cout << "Weryfikacja: struktura nie jest posortowana.\n";
+
 		// Zapisujemy wartości do pliku wskazanego we fladze -o lub do domyślnego wyniki.txt
     	if (write(Parameters::outputFile, struktura)) {
     		cout << "Zapisano pomyslnie do pliku: " << Parameters::outputFile << "\n";
@@ -75,10 +97,10 @@ void przeprowadzenieBadania() {
     }
 
 	// Tryb badań 
-    else if (Parameters::runMode == Parameters::RunModes::benchmark) {
+    else{
 
 		string plikWynikowy = Parameters::resultsFile; // Pobieramy nazwę pliku wynikowego z flagi -r
-		// Jeśli nie podano flagi -r, ustawiamy domyślną nazwę pliku wynikowego i informujemy użytkownika
+		// Jeśli nie podano flagi -r, ustawiamy domyślną nazwę pliku wynikowego
         if (plikWynikowy.empty()) {
             plikWynikowy = "wyniki.csv";
             cout << "Uwaga: Nie podano flagi -r! Zapisuje do: " << plikWynikowy << "\n";
@@ -92,12 +114,15 @@ void przeprowadzenieBadania() {
         for (int i = 0; i < liczbaPowtorzen; ++i) {
             Structure struktura;
 
-            wypelnijDaneTestowe<DataType, Structure>(struktura);
-
-            // Zabezpieczenie (np. gdyby użytkownik podał -l 0 w konsoli)
-            if (struktura.getSize() == 0) {
-                cout << "Rozmiar struktury wynosi 0, Koniec eksperymentu\n";
-                break;
+			// Wypełniamy strukture danymi testowymi (poza stoperem) 
+            Tablica<DataType> bufor;
+            if constexpr (is_same_v<Structure, BST<DataType>>) { // Jeżeli to BST to najpierw wypełniamy bufor, aby zamierzyc czas budowy BST
+                wypelnijDaneTestowe<DataType, Tablica<DataType>>(bufor);
+                if (bufor.getSize() == 0) break;
+            }
+			else { // Normalne wypełnianie struktury
+                wypelnijDaneTestowe<DataType, Structure>(struktura);
+                if (struktura.getSize() == 0) break;
             }
 
             string czasStart = pobierzAktualnyCzas(); // Pobieramy aktualny czas przed rozpoczęciem sortowania
@@ -108,7 +133,17 @@ void przeprowadzenieBadania() {
             switch (Parameters::algorithm) {
             case Parameters::Algorithms::quick:
                 cout << "Algorytm: Quick Sort\n";
-                uruchomQuickSort(struktura, Parameters::pivot);
+                if constexpr (is_same_v<Structure, Stos<DataType>>) {
+                    uruchomQuickSortStos(struktura, Parameters::pivot);
+                }
+                else if constexpr (is_same_v<Structure, BST<DataType>>) {
+                    for (size_t j = 0; j < bufor.getSize(); ++j) {
+                        struktura.push_back(bufor[j]);
+                    }
+                }
+                else {
+                    uruchomQuickSort(struktura, Parameters::pivot);
+                }
                 break;
 
             case Parameters::Algorithms::shell:
@@ -128,18 +163,13 @@ void przeprowadzenieBadania() {
             stoper.stop(); // Zatrzymujemy stoper po zakończeniu sortowania
             string czasKoniec = pobierzAktualnyCzas(); // Pobieramy aktualny czas po zakończeniu sortowania
 
-            string weryfikacja = sprawdzCzyPosortowane(struktura) ? "OK" : "BLAD";
+            string weryfikacja = sprawdzCzyPosortowane(struktura) ? "OK" : "BLAD"; // weryfikacja sortowania
 
             // Zapisujemy wyniki do pliku CSV
-                zapiszWynikDoCSV(Parameters::resultsFile, struktura.getSize(), nazwaStruktury, 
-                    nazwaTypu,nazwaAlgorytmu, nazwaPivota, nazwaOdstepu, stoper.getCzasMikrosekundy(), 
-                    stoper.getCzasMilisekundy(), stoper.getCzasSekundy(), czasStart, czasKoniec, weryfikacja);
+        	zapiszWynikDoCSV(Parameters::resultsFile, struktura.getSize(), nazwaStruktury, 
+        	nazwaTypu,nazwaAlgorytmu, nazwaPivota, nazwaOdstepu, nazwaUlozenia, stoper.getCzasMikrosekundy(), 
+        	stoper.getCzasMilisekundy(), stoper.getCzasSekundy(), czasStart, czasKoniec, weryfikacja);
         }
-    }
-
-	// tryb pomocy
-    else if (Parameters::runMode == Parameters::RunModes::help) {
-        Parameters::help();
     }
 }
 

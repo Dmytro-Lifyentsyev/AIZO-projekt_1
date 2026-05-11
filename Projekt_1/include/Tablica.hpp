@@ -1,5 +1,5 @@
 #pragma once
-
+// implementacja struktury - Tablica
 template <typename T>
 class Tablica {
 private:
@@ -23,30 +23,30 @@ public:
 		capacity = initialCapacity; 
 		data = new T[capacity];
     }
-
+	// Destruktor do zwalniania pamięci
     ~Tablica() {
 		delete[] data;
     }
-
+	// Funkcja do rezerwowania określonej pojemności tablicy
     void reserve(size_t newCapacity) {
         if (newCapacity > capacity) {
-            T* newData = new T[newCapacity];
+            T* newData = new T[newCapacity]; 
             for (size_t i = 0; i < size; i++) {
-                newData[i] = data[i];
+                newData[i] = data[i]; 
             }
             delete[] data;
             data = newData;
             capacity = newCapacity;
         }
     }
-
+	// Funkcja do dodawania elementów na koniec tablicy
     void push_back(const T& value) {
         if (size == capacity)
 			resize(); 
 		data[size] = value; 
 		size++; 
     }
-
+	// Funkcja do pobierania aktualnej liczby elementów w tablicy
     size_t getSize() const {
         return size;
     }
